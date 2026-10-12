@@ -1,9 +1,6 @@
 from  w1thermsensor import W1ThermSensor, Unit
-
-import time
-
+from time import sleep 
 import board
-
 import adafruit_dht
 
 sensor = W1ThermSensor()
@@ -15,22 +12,11 @@ while True:
 
     temperature_verschil =  temperature_in_celsius - temperature_c
     temperature_in_celsius = sensor.get_temperature(Unit.DEGREES_C)
+    temperature_c = dhtDevice.temperature
+    temperature_f = temperature_c * (9 / 5) + 32
+    humidity = dhtDevice.humidity
+    sleep(1)
 
-    try:
-        temperature_c = dhtDevice.temperature
-        temperature_f = temperature_c * (9 / 5) + 32
-        humidity = dhtDevice.humidity
-    
-
-    except RuntimeError as error:
-        print(error.args[0])
-        time.sleep(2.0)
-        continue    
-    except RuntimeError as error:
-        dhtDevice.exit()
-        raise error
-    
-    time.sleep(2.0)
 
     if temperature_verschil < 1:
         print("DHT11: ")
